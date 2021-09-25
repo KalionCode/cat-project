@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
     <title>Rising Sea level</title>
 </head>
 
@@ -12,12 +19,34 @@
     <div style="height: 100%; width: 100%;display: flex; justify-content: left; align-items: stretch;">
 
         <div id='game' style="background-color: black;padding: 0; width: 75%;"></div>
-        <div style="background-color: white; width: 25%"></div>
+        <div id="gamepanel">
+            <div id="objectives">
+                <h1><b>Primary Objective:</b> save the town by evacuating nearshore households</h1>
+                <h2><b>Secondary Objective:</b> reduce the greenhouse gas emission the best you can</h2>
+
+            </div>
+            <hr>
+            <div id="instructions" class="box-container">
+                <p id="specific-instructions">
+                </p>
+                <input type="button" id="next-button" class="round-button" style="margin-left: 0.5em;" value="Next">
+                <input type="button" id="previous-button" class="round-button" style="display: none;"
+                    value="Previous">
+            </div>
+            <div id="status" class="box-container">
+                
+            </div>
+            <div id="controls" class="box-container">
+
+            </div>
+
+        </div>
 
     </div>
 
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
-    <script type="module" src="/static/game.js"></script>
+    <script src="/static/gameLogic.js"></script>
+    <script src="/static/gameRender.js"></script>
 </body>
 
 </html>

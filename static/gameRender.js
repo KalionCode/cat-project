@@ -26,10 +26,10 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-let state = {
-  seaLevelHeight: 1,
-}
+const SEAFLOOR = config.scale.height;
+const LANDHEIGHT = 200;
 
+//collection of game objects
 const gameObjects = {}
 
 function preload() {
@@ -41,20 +41,18 @@ function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
   
   //ocean
-  gameObjects.ocean = this.add.rectangle(0,600,1000, state.seaLevelHeight, 0x0289C1, 0.5).setOrigin(0,1);
-  console.log(gameObjects.ocean)
+  gameObjects.ocean = this.add.rectangle(0,SEAFLOOR,1000, state.seaLevelHeight, 0x0289C1, 0.5).setOrigin(0,1);
 
   //land
-  gameObjects.land = this.add.rectangle(600,600,400, 200, 0x00ff00).setOrigin(0,1);
-  gameObjects.beach = this.add.triangle(400,600,600,600,600,400,400,600,0xF1ED49).setOrigin(0,1);
+  gameObjects.land = this.add.rectangle(600,SEAFLOOR,400, LANDHEIGHT, 0x00ff00).setOrigin(0,1);
+  gameObjects.beach = this.add.triangle(300,SEAFLOOR,300,0,0,LANDHEIGHT,300,200,0xffff00).setOrigin(0,1)
 }
 
 function update() {
-  if (state.seaLevelHeight < 800){
-    state.seaLevelHeight = state.seaLevelHeight + 0.1
-  }
+  // if (state.seaLevelHeight < 800){
+  //   state.seaLevelHeight = state.seaLevelHeight + 0.1
+  // }
 
-  gameObjects.ocean.displayHeight = state.seaLevelHeight
+  // gameObjects.ocean.displayHeight = state.seaLevelHeight
   
-  console.log(state.seaLevelHeight)
 }

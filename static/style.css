@@ -1,0 +1,60 @@
+#gamepanel {
+    padding: 1em;
+    background-color: white;
+    width: 25vw;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#objectives>h1 {
+    font-size: 1.3em;
+    font-weight: normal;
+}
+
+#objectives>h2 {
+    color: gray;
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+#status, #controls {
+    display: none;
+    width: 100%;
+}
+
+#instructions>p {
+    font-weight: bolder;
+    font-size: 0.9em;
+}
+
+#instructions::first-letter {
+    font-size: 2em;
+}
+
+.box-container {
+    overflow: hidden;
+    padding: 1em;
+    border-radius: 20px 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.round-button {
+    padding: 0.5em 1em;
+    color: white;
+    border: none;
+    border-radius: 10px 10px;
+}
+
+#next-button {
+    float: right;
+    background-color: #0099ff;
+}
+
+#next-button:hover {
+    color: white;
+    border: none;
+    background-color: #005f9e;
+}
+
+#previous-button {
+    background-color: gray;
+}
