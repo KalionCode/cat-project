@@ -1,4 +1,4 @@
-const $ = document;
+
 
 const INSTRUCTIONS = [
     `
@@ -30,58 +30,74 @@ const INSTRUCTIONS = [
 
 ]
 
+const ADVISES = `
+Your consultant says: <b>"Adding sand will make beach-goers happy, but beware: The sand washes away over time. Seawalls can
+protect homes but they aren't good for beaches if you can afford it, consider buying out beachfront homeowners to get
+them out of harm's way.<b>"
+`
+
+const COSTS = {
+    buildWall: 2000,
+    widenBeach: 1500,
+    hireConsultant: 1000,
+    reduceEmissions: 0,
+}
+
 let state = {
-    seaLevelHeight: 100,
-    fundAmount: 5000,
-    greenhouseGasEmission: 1000,
+    seaLevelHeight: 50,
+    moneyAmount: 5000,
+    incomeAmount: 1000,
+    greenhouseGasEmission: 10000,
+    turn: 0,
+    wallStrength: 0,
+    beachLength: 0,
+    consulted: false,
     instruction: {
         id: 0,
     },
-    turn: 0,
+}
+
+function customLogicForInstructionID() {
+    let id = state.instruction.id;
+    if (id + 1 > INSTRUCTIONS.length) {
+        $.querySelector('#instructions').style.display = 'none';
+    }
+
+    switch (id) {
+        case 1:
+            nextBtnElement.innerHTML = 'Start'
+            break;
+        case 2:
+            gameCode()
+            break
+        default:
+            nextBtnElement.innerHTML = 'Next'
+            break;
+    }
 }
 
 function introductionCode() {//introduction-level code
     const instructionElement = $.querySelector('#specific-instructions');
-    const nextButtonElement = $.querySelector('#next-button');
-    const previousButtonElement = $.querySelector('#previous-button');
+    const nextBtnElement = $.querySelector('#next-btn');
+    const previousBtnElement = $.querySelector('#previous-btn');
 
-    function customLogicForInstructionID() {
-        let id = state.instruction.id;
-
-        if (id + 1 > INSTRUCTIONS.length) {
-            $.querySelector('#instructions').style.display = 'none';
-        }
-
-        switch (id) {
-            case 1:
-                nextButtonElement.value = 'Start'
-                break;
-            case 2:
-                gameCode()
-                break
-            default:
-                nextButtonElement.value = 'Next'
-                break;
-        }
-    }
-
-    nextButtonElement.addEventListener('click', function (e) {
+    nextBtnElement.addEventListener('click', function (e) {
         state.instruction.id = state.instruction.id + 1;
         let id = state.instruction.id;
         instructionElement.innerHTML = INSTRUCTIONS[id];
         if (id > 0) {
-            previousButtonElement.style.display = "initial";
+            previousBtnElement.style.display = "initial";
         }
         customLogicForInstructionID()
     })
 
-    previousButtonElement.addEventListener('click', function (e) {
+    previousBtnElement.addEventListener('click', function (e) {
         state.instruction.id = state.instruction.id - 1;
         let id = state.instruction.id;
         console.log(id)
         instructionElement.innerHTML = INSTRUCTIONS[id];
         if (id == 0) {
-            previousButtonElement.style.display = "none";
+            previousBtnElement.style.display = "none";
         }
         customLogicForInstructionID()
     })
@@ -89,13 +105,93 @@ function introductionCode() {//introduction-level code
     instructionElement.innerHTML = INSTRUCTIONS[0];
 }
 
+function updateStatus() {
+    const turnAmountElement = $.querySelector('#turn-amount')
+    const moneyAmountElement = $.querySelector('#money-amount');
+    const incomeAmountElement = $.querySelector('#income-amount')
+    const greenhouseGasAmountElement = $.querySelector('#greenhouse-gas-amount')
+
+    turnAmountElement.innerHTML = `${state.turn}`
+    moneyAmountElement.innerHTML = `$${state.moneyAmount}`
+    incomeAmountElement.innerHTML = `$${state.incomeAmount}`
+    greenhouseGasAmountElement.innerHTML = state.greenhouseGasEmission
+}
+
+function addEventListenerToBtn() {
+    const buildWallBtnElement = $.querySelector("#build-wall-btn");
+    const widenBeachBtnElement = $.querySelector("#widen-beach-btn");
+    const hireConsultantBtnElement = $.querySelector("#hire-consultant-btn");
+    const reduceEmissionsBtnElement = $.querySelector("#reduce-emissions-btn");
+    const nextTurnBtnElement = $.querySelector('#next-turn-btn');
+
+    buildWallBtnElement.addEventListener('click', function () {
+        state.moneyAmount = state.moneyAmount - COSTS.buildWall
+        state.wallStrength = state.wallStrength + 1;
+
+        updateStatus()
+        buildWallBtnElement.disabled = true;
+    })
+
+    widenBeachBtnElement.addEventListener('click', function () {
+        state.moneyAmount = state.moneyAmount - COSTS.widenBeach
+        state.beachLength = state.beachLength + 1;
+
+        updateStatus()
+        widenBeachBtnElement.disabled = true;
+    })
+
+    hireConsultantBtnElement.addEventListener('click', function () {
+        if (!state.consulted) {
+            //before consultation
+            state.moneyAmount = state.moneyAmount - COSTS.hireConsultant
+            popupInfo(ADVISES)
+
+            state.consulted = true
+            hireConsultantBtnElement.innerHTML = "Show advise";
+            $.querySelector('#hire-consultant-cost').innerHTML = ""
+            
+            updateStatus()
+        } else {
+            popupInfo(ADVISES)
+        }
+    })
+
+    reduceEmissionsBtnElement.addEventListener('click', function () {
+        state.moneyAmount = state.moneyAmount - COSTS.reduceEmissions
+        updateStatus()
+        reduceEmissionsBtnElement.disabled = true;
+    })
+
+
+
+    nextTurnBtnElement.addEventListener("click", function (e) {
+        //raise the sea level
+        state.turn = state.turn + 1;
+        state.seaLevelHeight = state.seaLevelHeight + 10
+
+        updateStatus()
+        //reset button disability
+        buildWallBtnElement.disabled = false;
+        widenBeachBtnElement.disabled = false;
+        hireConsultantBtnElement.disabled = false;
+        reduceEmissionsBtnElement.disabled = false;
+    })
+}
+
 function gameCode() {
+
+    //initialize 
+    state.turn = 1;
 
     const statusElement = $.querySelector('#status');
     const controlElement = $.querySelector('#controls');
 
-    statusElement.style.display = 'initial';
-    controlElement.style.display = 'initial';
+    statusElement.style.display = 'block';
+    controlElement.style.display = 'block';
+
+    updateStatus()
+
+    addEventListenerToBtn()
 
 }
 

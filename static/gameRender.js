@@ -53,6 +53,6 @@ function update() {
   //   state.seaLevelHeight = state.seaLevelHeight + 0.1
   // }
 
-  // gameObjects.ocean.displayHeight = state.seaLevelHeight
+  gameObjects.ocean.displayHeight = state.seaLevelHeight
   
 }

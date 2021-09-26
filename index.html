@@ -15,7 +15,10 @@
 </head>
 
 <body style="margin: 0;width: 100vw; height: 100vh;">
-
+    <div id="info-popup">
+        <p></p>
+        <button class="blue-btn round-btn">Hide</button>
+    </div>
     <div style="height: 100%; width: 100%;display: flex; justify-content: left; align-items: stretch;">
 
         <div id='game' style="background-color: black;padding: 0; width: 75%;"></div>
@@ -29,15 +32,49 @@
             <div id="instructions" class="box-container">
                 <p id="specific-instructions">
                 </p>
-                <input type="button" id="next-button" class="round-button" style="margin-left: 0.5em;" value="Next">
-                <input type="button" id="previous-button" class="round-button" style="display: none;"
-                    value="Previous">
+                <button id="next-btn" class="blue-btn round-btn" style="margin-left: 0.5em;">Next</button>
+                <button id="previous-btn" class="round-btn" style="display: none;">Previous</button>
+
             </div>
             <div id="status" class="box-container">
-                
+                <h1>STATUS</h1>
+                <hr>
+                <span>Current turn: <b id='turn-amount'></b></span>
+                <br>
+                <span>Money: <b id='money-amount'></b></span>
+                <br>
+                <span>Income: <b id='income-amount'></b></span>
+                <br>
+                <span>Greenhouse gas emission: <b id='greenhouse-gas-amount'></b></span>
             </div>
             <div id="controls" class="box-container">
-
+                <h1>ACTIONS</h1>
+                <hr>
+                <div>
+                    <span>Build and reinforce your seawall</span>
+                    <br>
+                    <!-- <button class="round-btn">Sell</button> -->
+                    <span>$2000: <button id="build-wall-btn" class="blue-btn round-btn">Buy</button></span>
+                </div>
+                <div>
+                    <span>Widen the beach by buying more sand</span>
+                    <br>
+                    <!-- <button class="round-btn">Sell</button> -->
+                    <span>$2000: <button id="widen-beach-btn" class="blue-btn round-btn">Buy</button></span>
+                </div>
+                <div>
+                    <span>Hire a consultant for specific advices</span>
+                    <br>
+                    <!-- <button class="round-btn"></button> -->
+                    <span id='hire-consultant-cost'>$1000: </span><button id="hire-consultant-btn" class="blue-btn round-btn">Buy</button>
+                </div>
+                <div>
+                    <span>Reduce the greenhouse gas emission(this would cut your income as well)</span>
+                    <br>
+                    <!-- <button class="round-btn"></button> -->
+                    <span>$2000: <button id="reduce-emissions-btn" class="blue-btn round-btn">Buy</button></span>
+                </div>
+                <button id="next-turn-btn" class="blue-btn round-btn">Next turn</button>
             </div>
 
         </div>
@@ -45,6 +82,8 @@
     </div>
 
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+    <script src="/static/infoPopup.js"></script>
+
     <script src="/static/gameLogic.js"></script>
     <script src="/static/gameRender.js"></script>
 </body>

@@ -1,8 +1,63 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.box-container {
+    margin-top: 1em;
+    overflow: hidden;
+    padding: 1em;
+    border-radius: 20px 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.box-container h1 {
+    font-weight: 700;
+    font-size: 1.1em;
+    margin: 0;
+    padding: 0;
+}
+
+.round-btn {
+    font-weight: bold;
+    padding: 0.5em 1em;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 10px 10px;
+}
+.round-btn:disabled {
+    background-color: gray;
+}
+
+.round-btn:disabled:hover {
+    background-color: gray;
+}
+
+.blue-btn {
+    background-color: #0099ff;
+}
+
+.blue-btn:hover {
+    color: white;
+    border: none;
+    background-color: #005f9e;
+}
+
 #gamepanel {
+    overflow: auto;
     padding: 1em;
     background-color: white;
     width: 25vw;
-    font-family: 'Montserrat', sans-serif;
+}
+
+#info-popup{
+    max-width: 50vw;
+    background-color: white;
+    display: none;
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    padding: 1em;
 }
 
 #objectives>h1 {
@@ -16,11 +71,6 @@
     font-weight: normal;
 }
 
-#status, #controls {
-    display: none;
-    width: 100%;
-}
-
 #instructions>p {
     font-weight: bolder;
     font-size: 0.9em;
@@ -30,31 +80,23 @@
     font-size: 2em;
 }
 
-.box-container {
-    overflow: hidden;
-    padding: 1em;
-    border-radius: 20px 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+#status, #controls {
+    display: none;
 }
 
-.round-button {
-    padding: 0.5em 1em;
-    color: white;
-    border: none;
-    border-radius: 10px 10px;
+#controls>div {
+    margin-top: 1em;
 }
 
-#next-button {
+#controls span {
+    font-weight: bold;
+}
+
+#next-btn {
     float: right;
-    background-color: #0099ff;
 }
 
-#next-button:hover {
-    color: white;
-    border: none;
-    background-color: #005f9e;
-}
-
-#previous-button {
-    background-color: gray;
+#next-turn-btn {
+    margin-top: 1em;
+    width: 100%;
 }
