@@ -1,5 +1,3 @@
-
-
 const INSTRUCTIONS = [
     `
     According to the latest scientific research, by next year, the sea level will rise nearly 3 feet and
@@ -36,20 +34,31 @@ protect homes but they aren't good for beaches if you can afford it, consider bu
 them out of harm's way.<b>"
 `
 
-const COSTS = {
-    buildWall: 2000,
-    widenBeach: 1500,
+let COSTS = {
+    buildWall: 1000,
+    widenBeach: 2000,
     hireConsultant: 1000,
+    evacuateArea: 40000,
     reduceEmissions: 0,
 }
 
+const INITIAL_MONEY = 10000 + COSTS.hireConsultant;
+const INITIAL_INCOME = 3700;
+const INITIAL_EMISSION = 2000
+const INITIAL_SEALEVEL = 50
+
+const INCOME_REDUCTION = 250;
+const GREENHOUSE_REDUCTION = 100;
+
+const SEAWALL_EFFECTIVENESS = 2;
 let state = {
-    seaLevelHeight: 50,
-    moneyAmount: 5000,
-    incomeAmount: 1000,
-    greenhouseGasEmission: 10000,
+    seaLevelHeight: INITIAL_SEALEVEL,
+    moneyAmount: INITIAL_MONEY,
+    incomeAmount: INITIAL_INCOME,
+    greenhouseGasEmission: INITIAL_EMISSION,
     turn: 0,
     wallStrength: 0,
+    flooded: false,
     beachLength: 0,
     consulted: false,
     instruction: {
@@ -58,6 +67,7 @@ let state = {
 }
 
 function customLogicForInstructionID() {
+    const nextBtnElement = $.querySelector('#next-btn');
     let id = state.instruction.id;
     if (id + 1 > INSTRUCTIONS.length) {
         $.querySelector('#instructions').style.display = 'none';
@@ -117,17 +127,103 @@ function updateStatus() {
     greenhouseGasAmountElement.innerHTML = state.greenhouseGasEmission
 }
 
-function addEventListenerToBtn() {
+function updateFinalResult() {
+    const turnResultElement = $.querySelector('#turn-result')
+    const moneyResultElement = $.querySelector('#money-result');
+    const incomeResultElement = $.querySelector('#income-result')
+    const greenhouseGasResultElement = $.querySelector('#greenhouse-gas-result')
+
+    turnResultElement.innerHTML = `${state.turn}`
+    moneyResultElement.innerHTML = `$${state.moneyAmount}`
+    incomeResultElement.innerHTML = `$${state.incomeAmount}`
+    greenhouseGasResultElement.innerHTML = state.greenhouseGasEmission
+}
+
+function showOverPrompt(text = "Game Over") {
+    const gameEndOverlayElement = $.querySelector('#overlay');
+    $.querySelector('#game-over-msg').innerHTML = text
+    gameEndOverlayElement.style.display = 'flex';
+}
+
+function setBtnDisability() {
     const buildWallBtnElement = $.querySelector("#build-wall-btn");
     const widenBeachBtnElement = $.querySelector("#widen-beach-btn");
     const hireConsultantBtnElement = $.querySelector("#hire-consultant-btn");
     const reduceEmissionsBtnElement = $.querySelector("#reduce-emissions-btn");
+    const evacuateAreaBtnElement = $.querySelector('#evacuate-area-btn');
+
+    buildWallBtnElement.disabled = (state.moneyAmount >= COSTS.buildWall) ? false : true
+    widenBeachBtnElement.disabled = (state.moneyAmount >= COSTS.widenBeach) ? false : true
+    hireConsultantBtnElement.disabled = (state.moneyAmount >= COSTS.hireConsultant) ? false : true
+    evacuateAreaBtnElement.disabled = (state.moneyAmount >= COSTS.evacuateArea) ? false : true
+    reduceEmissionsBtnElement.disabled = false;
+}
+
+function addEventListenerToBtn() {
+
+    function nextTurnUpdate(e) {
+
+        function didGameLose() {
+            //flooded the town
+            if (state.seaLevelHeight > 200) {
+                //seawall blocking water
+                state.wallStrength = state.wallStrength - SEAWALL_EFFECTIVENESS;
+                if (state.wallStrength < 0) {
+                    state.flooded = true;
+                    return true
+                } else {
+                    return false
+                }
+                // // no money
+                // } else if (state.moneyAmount < 0) {
+                //     return true
+            } else {
+                return false
+            }
+        }
+
+        //raise the sea level
+        state.turn = state.turn + 1;
+        state.seaLevelHeight = state.seaLevelHeight + Math.floor(state.greenhouseGasEmission / 100)
+
+        //wash away the sand
+        state.beachLength = (state.beachLength-1>0) ? state.beachLength - 1: state.beachLength;  
+
+        //give income 
+        state.moneyAmount = state.moneyAmount + state.incomeAmount;
+
+        if (!didGameLose()) {
+            updateStatus()
+            //reset button disability
+            setBtnDisability()
+
+        } else {
+            showOverPrompt()
+            setBtnDisability()
+            updateStatus()
+            updateFinalResult()
+
+        }
+    }
+
+    function gameWonUpdate(e) {
+        state.moneyAmount = state.moneyAmount - COSTS.evacuateArea;
+        updateStatus()
+        updateFinalResult()
+        showOverPrompt("You Won!")
+    }
+
+    const buildWallBtnElement = $.querySelector("#build-wall-btn");
+    const widenBeachBtnElement = $.querySelector("#widen-beach-btn");
+    const hireConsultantBtnElement = $.querySelector("#hire-consultant-btn");
+    const reduceEmissionsBtnElement = $.querySelector("#reduce-emissions-btn");
+    const evacuateAreaBtnElement = $.querySelector('#evacuate-area-btn');
     const nextTurnBtnElement = $.querySelector('#next-turn-btn');
 
     buildWallBtnElement.addEventListener('click', function () {
         state.moneyAmount = state.moneyAmount - COSTS.buildWall
         state.wallStrength = state.wallStrength + 1;
-
+        setBtnDisability()
         updateStatus()
         buildWallBtnElement.disabled = true;
     })
@@ -135,7 +231,7 @@ function addEventListenerToBtn() {
     widenBeachBtnElement.addEventListener('click', function () {
         state.moneyAmount = state.moneyAmount - COSTS.widenBeach
         state.beachLength = state.beachLength + 1;
-
+        setBtnDisability()
         updateStatus()
         widenBeachBtnElement.disabled = true;
     })
@@ -149,7 +245,7 @@ function addEventListenerToBtn() {
             state.consulted = true
             hireConsultantBtnElement.innerHTML = "Show advise";
             $.querySelector('#hire-consultant-cost').innerHTML = ""
-            
+            setBtnDisability()
             updateStatus()
         } else {
             popupInfo(ADVISES)
@@ -157,25 +253,19 @@ function addEventListenerToBtn() {
     })
 
     reduceEmissionsBtnElement.addEventListener('click', function () {
-        state.moneyAmount = state.moneyAmount - COSTS.reduceEmissions
+        //do nothing
+        state.moneyAmount = state.moneyAmount - COSTS.reduceEmissions;
+        //cut income but reduce greenhouse gas emissions which affects sea level rise speed
+        state.incomeAmount = state.incomeAmount - INCOME_REDUCTION;
+        state.greenhouseGasEmission = state.greenhouseGasEmission - GREENHOUSE_REDUCTION;
+        setBtnDisability()
         updateStatus()
         reduceEmissionsBtnElement.disabled = true;
     })
 
+    evacuateAreaBtnElement.addEventListener('click', gameWonUpdate);
 
-
-    nextTurnBtnElement.addEventListener("click", function (e) {
-        //raise the sea level
-        state.turn = state.turn + 1;
-        state.seaLevelHeight = state.seaLevelHeight + 10
-
-        updateStatus()
-        //reset button disability
-        buildWallBtnElement.disabled = false;
-        widenBeachBtnElement.disabled = false;
-        hireConsultantBtnElement.disabled = false;
-        reduceEmissionsBtnElement.disabled = false;
-    })
+    nextTurnBtnElement.addEventListener("click", nextTurnUpdate)
 }
 
 function gameCode() {
@@ -189,10 +279,23 @@ function gameCode() {
     statusElement.style.display = 'block';
     controlElement.style.display = 'block';
 
+    const buildWallCostElement = $.querySelector("#build-wall-cost");
+    const widenBeachCostElement = $.querySelector("#widen-beach-cost");
+    const hireConsultantCostElement = $.querySelector("#hire-consultant-cost");
+    const evacuateAreaCostElement = $.querySelector('#evacuate-area-cost')
+    const reduceEmissionsCostElement = $.querySelector("#reduce-emissions-cost");
+
+    buildWallCostElement.innerHTML = `$${COSTS.buildWall}`
+    widenBeachCostElement.innerHTML = `$${COSTS.widenBeach}`
+    hireConsultantCostElement.innerHTML = `$${COSTS.hireConsultant}`
+    evacuateAreaCostElement.innerHTML = `$${COSTS.evacuateArea}`
+
+    setBtnDisability()
     updateStatus()
 
     addEventListenerToBtn()
 
 }
 
+//entry point (function)
 introductionCode()

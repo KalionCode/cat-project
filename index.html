@@ -15,6 +15,21 @@
 </head>
 
 <body style="margin: 0;width: 100vw; height: 100vh;">
+    <div id="overlay">
+        <div id="game-over-prompt" class="box-container">
+            <h2 id="game-over-msg">Game Over</h2>
+            <hr>
+            <span>Current turn: <b id='turn-result'></b></span>
+            <br>
+            <span>Money: <b id='money-result'></b></span>
+            <br>
+            <span>Income: <b id='income-result'></b></span>
+            <br>
+            <span>Greenhouse gas emission: <b id='greenhouse-gas-result'></b></span>
+            <button style="float: right;" class="blue-btn round-btn"
+                onclick="window.location.reload(false)">Restart</button>
+        </div>
+    </div>
     <div id="info-popup">
         <p></p>
         <button class="blue-btn round-btn">Hide</button>
@@ -51,29 +66,42 @@
                 <h1>ACTIONS</h1>
                 <hr>
                 <div>
-                    <span>Build and reinforce your seawall</span>
+                    <span>• Build and reinforce your seawall</span>
                     <br>
                     <!-- <button class="round-btn">Sell</button> -->
-                    <span>$2000: <button id="build-wall-btn" class="blue-btn round-btn">Buy</button></span>
+                    <span id="build-wall-cost" class="cost-label"></span><button id="build-wall-btn" style="width: 100%;margin-top: 0.5em;"
+                        class="blue-btn round-btn">Build a seawall or reinforce it</button>
                 </div>
                 <div>
-                    <span>Widen the beach by buying more sand</span>
+                    <span>• Widen the beach by buying more sand</span>
                     <br>
                     <!-- <button class="round-btn">Sell</button> -->
-                    <span>$2000: <button id="widen-beach-btn" class="blue-btn round-btn">Buy</button></span>
+                    <span id="widen-beach-cost" class="cost-label"></span><button id="widen-beach-btn" style="width: 100%;margin-top: 0.5em;"
+                        class="blue-btn round-btn">Buy more sand and widen the beach</button>
                 </div>
                 <div>
-                    <span>Hire a consultant for specific advices</span>
+                    <span>• Hire a consultant for specific advices</span>
                     <br>
                     <!-- <button class="round-btn"></button> -->
-                    <span id='hire-consultant-cost'>$1000: </span><button id="hire-consultant-btn" class="blue-btn round-btn">Buy</button>
+                    <span id='hire-consultant-cost' class="cost-label"></span><button style="width: 100%;margin-top: 0.5em;"
+                        id="hire-consultant-btn" class="blue-btn round-btn">Hire a consultant</button>
                 </div>
                 <div>
-                    <span>Reduce the greenhouse gas emission(this would cut your income as well)</span>
+                    <span>• Buy all the nearshore houses to evacuate the area</span>
                     <br>
                     <!-- <button class="round-btn"></button> -->
-                    <span>$2000: <button id="reduce-emissions-btn" class="blue-btn round-btn">Buy</button></span>
+                    <span id='evacuate-area-cost' class="cost-label"></span><button style="width: 100%;margin-top: 0.5em;"
+                        id="evacuate-area-btn" class="blue-btn round-btn">Buy the houses and evacuate the area</button>
                 </div>
+                <div>
+                    <span>• Reduce the greenhouse gas emission(this would cut your income as well)</span>
+                    <br>
+                    <!-- <button class="round-btn"></button> -->
+                    <span id="reduce-emission-cost" class="cost-label">Cuts your income by $100:</span><button id="reduce-emissions-btn"
+                        style="width: 100%;margin-top: 0.5em;" class="blue-btn round-btn">Reduce greenhouse gas
+                        emissions</button>
+                </div>
+                <hr style="margin-top: 1em; margin-bottom: 1em;">
                 <button id="next-turn-btn" class="blue-btn round-btn">Next turn</button>
             </div>
 

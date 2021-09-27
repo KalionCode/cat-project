@@ -1,4 +1,4 @@
-body{
+body {
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -17,6 +17,10 @@ body{
     padding: 0;
 }
 
+.cost-label {
+    font-size: smaller;
+}
+
 .round-btn {
     font-weight: bold;
     padding: 0.5em 1em;
@@ -25,6 +29,7 @@ body{
     border: none;
     border-radius: 10px 10px;
 }
+
 .round-btn:disabled {
     background-color: gray;
 }
@@ -43,6 +48,31 @@ body{
     background-color: #005f9e;
 }
 
+#overlay {
+    z-index: 999;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-over-prompt {
+    margin-top: 0;
+    background-color: white;
+    width: 30%;
+}
+
+#game-over-prompt > h2 {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
 #gamepanel {
     overflow: auto;
     padding: 1em;
@@ -50,7 +80,7 @@ body{
     width: 25vw;
 }
 
-#info-popup{
+#info-popup {
     max-width: 50vw;
     background-color: white;
     display: none;
@@ -97,6 +127,5 @@ body{
 }
 
 #next-turn-btn {
-    margin-top: 1em;
     width: 100%;
 }
