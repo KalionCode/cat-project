@@ -61,6 +61,7 @@ let state = {
     flooded: false,
     beachLength: 0,
     consulted: false,
+    actionsTaken: [],
     instruction: {
         id: 0,
     },
@@ -152,10 +153,11 @@ function setBtnDisability() {
     const reduceEmissionsBtnElement = $.querySelector("#reduce-emissions-btn");
     const evacuateAreaBtnElement = $.querySelector('#evacuate-area-btn');
 
-    buildWallBtnElement.disabled = (state.moneyAmount >= COSTS.buildWall) ? false : true
-    widenBeachBtnElement.disabled = (state.moneyAmount >= COSTS.widenBeach) ? false : true
-    hireConsultantBtnElement.disabled = (state.moneyAmount >= COSTS.hireConsultant) ? false : true
-    evacuateAreaBtnElement.disabled = (state.moneyAmount >= COSTS.evacuateArea) ? false : true
+
+    buildWallBtnElement.disabled = (state.moneyAmount >= COSTS.buildWall && !state.actionsTaken.includes('buildWall')) ? false : true
+    widenBeachBtnElement.disabled = (state.moneyAmount >= COSTS.widenBeach && !state.actionsTaken.includes('widenBeach')) ? false : true
+    hireConsultantBtnElement.disabled = (state.moneyAmount >= COSTS.hireConsultant || state.consulted) ? false : true
+    evacuateAreaBtnElement.disabled = (state.moneyAmount >= COSTS.evacuateArea && !state.actionsTaken.includes('evacuateArea')) ? false : true
     reduceEmissionsBtnElement.disabled = false;
 }
 
@@ -192,6 +194,8 @@ function addEventListenerToBtn() {
         //give income 
         state.moneyAmount = state.moneyAmount + state.incomeAmount;
 
+        //reset state.actionsTaken
+        state.actionsTaken = [];
         if (!didGameLose()) {
             updateStatus()
             //reset button disability
@@ -208,6 +212,7 @@ function addEventListenerToBtn() {
 
     function gameWonUpdate(e) {
         state.moneyAmount = state.moneyAmount - COSTS.evacuateArea;
+        state.actionsTaken.push('evacuateArea')
         updateStatus()
         updateFinalResult()
         showOverPrompt("You Won!")
@@ -223,6 +228,7 @@ function addEventListenerToBtn() {
     buildWallBtnElement.addEventListener('click', function () {
         state.moneyAmount = state.moneyAmount - COSTS.buildWall
         state.wallStrength = state.wallStrength + 1;
+        state.actionsTaken.push('buildWall')
         setBtnDisability()
         updateStatus()
         buildWallBtnElement.disabled = true;
@@ -231,6 +237,7 @@ function addEventListenerToBtn() {
     widenBeachBtnElement.addEventListener('click', function () {
         state.moneyAmount = state.moneyAmount - COSTS.widenBeach
         state.beachLength = state.beachLength + 1;
+        state.actionsTaken.push('widenBeach')
         setBtnDisability()
         updateStatus()
         widenBeachBtnElement.disabled = true;
