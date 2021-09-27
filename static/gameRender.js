@@ -31,10 +31,18 @@ const LANDHEIGHT = 200;
 const gameObjects = {}
 
 function preload() {
+
+  // window.game = this;
   this.load.image('sky', 'static/assets/sky.png');
+  this.load.audio('music', ['static/assets/music.mp3',])
 }
 
 function create() {
+  this.sound.pauseOnBlur = false;
+  this.sound.volume = 0.05;
+  gameObjects.music = this.sound.add('music')
+  gameObjects.music.play()
+
   //background (sky)
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
