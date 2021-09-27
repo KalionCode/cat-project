@@ -34,12 +34,12 @@ function preload() {
 
   // window.game = this;
   this.load.image('sky', 'static/assets/sky.png');
-  this.load.audio('music', ['static/assets/music.mp3',])
+  this.load.audio('music', ['static/assets/music_luke.wav',])
 }
 
 function create() {
   this.sound.pauseOnBlur = false;
-  this.sound.volume = 0.05;
+  this.sound.volume = 1;
   gameObjects.music = this.sound.add('music')
   gameObjects.music.play()
 
