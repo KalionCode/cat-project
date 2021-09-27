@@ -121,7 +121,9 @@ function updateStatus() {
     const moneyAmountElement = $.querySelector('#money-amount');
     const incomeAmountElement = $.querySelector('#income-amount')
     const greenhouseGasAmountElement = $.querySelector('#greenhouse-gas-amount')
+    const wallStrengthAmountElement = $.querySelector('#wall-strength-amount')
 
+    wallStrengthAmountElement.innerHTML = `${state.wallStrength}`
     turnAmountElement.innerHTML = `${state.turn}`
     moneyAmountElement.innerHTML = `$${state.moneyAmount}`
     incomeAmountElement.innerHTML = `$${state.incomeAmount}`
@@ -133,7 +135,9 @@ function updateFinalResult() {
     const moneyResultElement = $.querySelector('#money-result');
     const incomeResultElement = $.querySelector('#income-result')
     const greenhouseGasResultElement = $.querySelector('#greenhouse-gas-result')
+    const wallStrengthAmountElement = $.querySelector('#wall-strength-result')
 
+    wallStrengthAmountElement.innerHTML = `${state.wallStrength}`
     turnResultElement.innerHTML = `${state.turn}`
     moneyResultElement.innerHTML = `$${state.moneyAmount}`
     incomeResultElement.innerHTML = `$${state.incomeAmount}`
@@ -170,7 +174,7 @@ function addEventListenerToBtn() {
             if (state.seaLevelHeight > 200) {
                 //seawall blocking water
                 state.wallStrength = state.wallStrength - SEAWALL_EFFECTIVENESS;
-                if (state.wallStrength < 0) {
+                if (state.wallStrength <= 0) {
                     state.flooded = true;
                     return true
                 } else {
