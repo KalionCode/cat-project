@@ -92,7 +92,7 @@ function create() {
       { key: 'water16' },
       { key: 'water17' },
     ],
-    frameRate: 10,
+    frameRate: 11,
     repeat: -1,
   })
 
@@ -100,13 +100,20 @@ function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
   //house
-  gameObjects.house = this.add.image(800, SEAFLOOR - LANDHEIGHT, 'house').setOrigin(0, 1)
+  gameObjects.house = this.add.image(800, SEAFLOOR - LANDHEIGHT+1, 'house').setOrigin(0, 1)
 
   //ocean
   gameObjects.oceanBlock = this.add.rectangle(0, SEAFLOOR + 1, 600, 1, 0x3CBFF0).setOrigin(0, 1);
   gameObjects.ocean = [];
   for (let i = 0; i < 10; i++) {
-    gameObjects.ocean.push(this.add.sprite(i * 128, SEAFLOOR + (110 - state.seaLevelHeight), 'water1').setOrigin(0, 1).play('seawave'))
+    if (i > 4) {
+      gameObjects.ocean.push(this.add.sprite(i * 128, SEAFLOOR + (110 - state.seaLevelHeight), 'water1')
+        .setOrigin(0, 1).setVisible(false).play('seawave'))
+    } else {
+      gameObjects.ocean.push(this.add.sprite(i * 128, SEAFLOOR + (110 - state.seaLevelHeight), 'water1')
+      .setOrigin(0, 1).setVisible(true).play('seawave'))
+    }
+
   }
   //land
   gameObjects.land = this.add.image(600, SEAFLOOR, 'land').setOrigin(0, 1);
@@ -146,6 +153,9 @@ function update() {
   if (state.flooded == true) {
     for (let i of gameObjects.wall) {
       i.destroy()
+    }
+    for (let i of gameObjects.ocean){
+      i.setVisible(true)
     }
     gameObjects.oceanBlock.displayWidth = 1000;
   }
