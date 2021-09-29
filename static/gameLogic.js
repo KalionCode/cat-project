@@ -7,7 +7,7 @@ const INSTRUCTIONS = [
     You will have $5000M at your disposal as the Sea Level Rise Evacuation Fund provided by the central
     government. Be aware, after you expend all of the fund, you can only then earn money from the income
     of your industrial factories or by raising the tax which would significantly decreased your
-    likability amoung the civilians.
+    likability among the civilians.
     <br><br>
     Your ultimate goal is to evacuate all the civilians in the town before the sea floods town. You will
     only have a limited amount of time as the sea will rise fast. You can, however, slow down the
